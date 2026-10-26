@@ -1,0 +1,20 @@
+{
+    "name": "beat-lab-worker",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "dev": "wrangler dev",
+        "deploy": "wrangler deploy",
+        "db:create": "wrangler d1 create beat-lab-db",
+        "db:migrate": "wrangler d1 migrations apply beat-lab-db --remote",
+        "typecheck": "tsc -p tsconfig.json"
+    },
+    "dependencies": {
+        "@beat-lab/shared": "workspace:*"
+    },
+    "devDependencies": {
+        "@cloudflare/workers-types": "latest",
+        "wrangler": "latest",
+        "typescript": "^7.0.2"
+    }
+}

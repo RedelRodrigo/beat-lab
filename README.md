@@ -35,30 +35,49 @@ bun run build
 
 The server stores patterns in SQLite. Set `DB_PATH`, `PORT`, `ALLOWED_ORIGIN` and `TRUST_PROXY` in `server/.env`. The frontend accepts `VITE_API_URL` when the API is deployed separately.
 
-## Deployment
+## Free deployment
 
-The repository is prepared for the simplest split deployment:
+The production deployment uses only Cloudflare's free services:
 
-- **Netlify** serves the frontend. The included `netlify.toml` uses `bun run build` and publishes `web/dist`.
-- **Render** runs the Express API with the included `render.yaml` and `server/Dockerfile`.
+- **Cloudflare Pages** serves the React frontend.
+- **Cloudflare Workers** runs the API from `worker/src/index.ts`.
+- **Cloudflare D1** stores patterns without requiring a paid persistent server disk.
 
-### Deploy the API first
+The original Express/Bun server remains available for local development and tests. Production uses the Worker implementation, which keeps the same `/api/*` contract.
 
-1. Push the repository to GitHub.
-2. In Render, choose **New Blueprint** and select the repository. Render reads `render.yaml`.
-3. Set `ALLOWED_ORIGIN` temporarily to the future Netlify URL, or update it after deploying the frontend.
-4. Keep the persistent disk mounted at `/data`. The database path is `/data/beatlab.db`.
-5. Confirm `https://YOUR-API.onrender.com/api/health` returns `{ "ok": true }`.
+### Deploy the API
+
+1. Install Wrangler or use `bunx wrangler login`.
+2. From the repository root, create a D1 database:
+
+   ```bash
+   bun run --cwd worker db:create
+   ```
+
+3. Copy the returned `database_id` into `worker/wrangler.toml`.
+4. Apply the schema:
+
+   ```bash
+   bun run --cwd worker db:migrate
+   ```
+
+5. Deploy the Worker:
+
+   ```bash
+   bun run deploy:worker
+   ```
+
+6. Confirm `https://beat-lab-api.YOUR-SUBDOMAIN.workers.dev/api/health` returns `{ "ok": true }`.
 
 ### Deploy the frontend
 
-1. In Netlify, import the same GitHub repository.
-2. Use the repository root as the base directory. `netlify.toml` supplies the build and publish settings.
-3. Add `VITE_API_URL=https://YOUR-API.onrender.com` as a Netlify environment variable.
-4. Deploy and copy the resulting URL.
-5. Update Render's `ALLOWED_ORIGIN` to that exact URL, without a trailing slash, then redeploy the API.
+1. In Cloudflare Pages, import the GitHub repository.
+2. Use `bun run build` as the build command and `web/dist` as the output directory.
+3. Add `BUN_VERSION=1.4.3` and `VITE_API_URL=https://beat-lab-api.YOUR-SUBDOMAIN.workers.dev` as Pages environment variables.
+4. Deploy the site and copy its public URL.
+5. Set `ALLOWED_ORIGIN` in `worker/wrangler.toml` to that exact URL and run `bun run deploy:worker` again.
 
-The `web/public/_redirects` file and `netlify.toml` rewrite `/p/:id` routes to `index.html`, so shared pattern links work after a refresh.
+The `web/public/_redirects` file and `netlify.toml` also preserve `/p/:id` routes for static hosts that support Netlify-style redirects.
 
 ## Architecture
 

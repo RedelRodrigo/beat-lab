@@ -1,0 +1,12 @@
+name = "beat-lab-api"
+main = "src/index.ts"
+compatibility_date = "2026-10-26"
+
+[vars]
+ALLOWED_ORIGIN = "http://localhost:5173"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "beat-lab-db"
+database_id = "26414474-ed2a-4011-8bde-5db3c708158c"
+migrations_dir = "migrations"

@@ -1,15 +1,19 @@
 {
     "name": "beat-lab",
     "private": true,
+    "packageManager": "bun@1.4.3",
     "workspaces": [
         "web",
         "server",
-        "shared"
+        "shared",
+        "worker"
     ],
     "scripts": {
         "dev": "bun run --filter '*' dev",
         "dev:web": "bun run --cwd web dev",
         "dev:server": "bun run --cwd server dev",
+        "dev:worker": "bun run --cwd worker dev",
+        "deploy:worker": "bun run --cwd worker deploy",
         "test": "bun run --filter '*' test",
         "build": "bun run --cwd web build"
     }
