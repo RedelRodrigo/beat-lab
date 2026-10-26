@@ -11,13 +11,13 @@ export const TrackRow = memo(function TrackRow({ index }: { index: number }) {
   const { label, color } = TRACK_META[track.id];
 
   return (
-    <div className="grid grid-cols-[7.5rem_1fr] items-center gap-3 md:grid-cols-[12rem_1fr]">
+    <div className="grid grid-cols-1 items-center gap-3 md:grid-cols-[15rem_minmax(0,1fr)]">
       <div className="flex min-w-0 items-center gap-2">
         <span
           className="h-3 w-3 shrink-0 rounded-full"
           style={{ backgroundColor: color }}
         />
-        <span className="hidden w-14 truncate text-sm md:block">{label}</span>
+        <span className="shrink-0 whitespace-nowrap text-sm">{label}</span>
         <button
           type="button"
           aria-pressed={track.muted}
