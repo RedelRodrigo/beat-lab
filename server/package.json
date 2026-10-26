@@ -1,0 +1,23 @@
+{
+    "name": "server",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "dev": "bun --watch src/index.ts",
+        "start": "bun src/index.ts",
+        "test": "bun test",
+        "typecheck": "tsc -p tsconfig.json"
+    },
+    "dependencies": {
+        "@beat-lab/shared": "workspace:*",
+        "cors": "^2.8.6",
+        "express": "^5.3.0",
+        "express-rate-limit": "^8.7.1"
+    },
+    "devDependencies": {
+        "@types/bun": "^1.4.3",
+        "@types/cors": "^2.8.19",
+        "@types/express": "^5.0.6",
+        "typescript": "^7.0.2"
+    }
+}

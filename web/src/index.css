@@ -1,0 +1,29 @@
+@import "tailwindcss";
+
+html,
+body,
+#root {
+  min-height: 100%;
+  margin: 0;
+  background: #07131a;
+  color: #e5e7eb;
+}
+
+body {
+  background-image:
+    radial-gradient(circle at 15% 0%, #164e63 0, transparent 34rem),
+    linear-gradient(135deg, #07131a 0%, #0c1722 45%, #101827 100%);
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+/* Evita seleccionar texto al pintar celdas arrastrando */
+.no-select {
+  user-select: none;
+  -webkit-user-select: none;
+}

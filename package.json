@@ -1,0 +1,16 @@
+{
+    "name": "beat-lab",
+    "private": true,
+    "workspaces": [
+        "web",
+        "server",
+        "shared"
+    ],
+    "scripts": {
+        "dev": "bun run --filter '*' dev",
+        "dev:web": "bun run --cwd web dev",
+        "dev:server": "bun run --cwd server dev",
+        "test": "bun run --filter '*' test",
+        "build": "bun run --cwd web build"
+    }
+}
